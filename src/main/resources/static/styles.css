@@ -1,0 +1,115 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.main-header {
+    background-color: #41A9D6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-buttons button {
+    background-color: #2B2B2B;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background-color: #444;
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+}
+
+.form-section {
+    width: 320px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.form-section h2 {
+    margin-bottom: 20px;
+    color: #2B2B2B;
+    text-align: center;
+}
+
+.pet-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.pet-form button {
+    background-color: #2B2B2B;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pet-form button:hover {
+    background-color: #444;
+}
+
+.table-section {
+    width: 500px;
+    background-color: #41A9D6;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.pet-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+.pet-table th, .pet-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.pet-table th {
+    border-bottom: 2px solid #fff;
+    font-weight: bold;
+}
+
+.pet-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
