@@ -10,4 +10,9 @@ public class HomeController {
     public String home() {
         return "index";
     }
+
+    @GetMapping("/vaccine")
+    public String vaccine(){
+        return "historyVaccine";
+    }
 }
