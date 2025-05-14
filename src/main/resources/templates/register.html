@@ -19,40 +19,40 @@
             <i class="fas fa-crow fa-2x me-2" style="color: #709085;"></i>
             <span class="h2 fw-bold">Pet Manager</span>
         </div>
-        <form>
+        <form th:action="@{/api/register}" method="post">
             <h4 class="fw-normal mb-3 text-center">Crear cuenta</h4>
             <div class="input-group mb-3">
                 <span class="input-group-text">
                     <i class="bi bi-person"></i>
                 </span>
-                <input type="text" class="form-control form-control-lg" name="nombre" placeholder="Nombre">
+                <input type="text" class="form-control" name="name" placeholder="Nombre">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">
                     <i class="bi bi-person"></i>
                 </span>
-                <input type="text" class="form-control form-control-lg" name="apelido" placeholder="Apellido">
+                <input type="text" class="form-control" name="surname" placeholder="Apellido">
             </div>
             <div class="input-group mb-3">
                   <span class="input-group-text">
                     <i class="bi bi-envelope"></i>
                   </span>
-                <input type="email" class="form-control form-control-lg" name="email" placeholder="Correo electronico">
+                  <input type="email" class="form-control" name="email" placeholder="Correo electronico">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">
                     <i class="bi bi-incognito"></i>
                 </span>
-                <input type="password" class="form-control form-control-lg" name="password" placeholder="Contraseña">
+                <input type="password" class="form-control" name="password" placeholder="Contraseña">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">
                     <i class="bi bi-incognito"></i>
                 </span>
-                <input type="password" class="form-control form-control-lg" name="password" placeholder="Confirmar contraseña">
+                <input type="password" class="form-control" name="confirmPassword" placeholder="Confirmar contraseña">
             </div>
             <div class="d-grid mb-3">
-                <button class="btn btn-success btn-lg" type="button">Registrarse</button>
+                <button class="btn btn-success btn-lg" type="submit">Registrarse</button>
             </div>
             <p class="text-center">¿Ya tienes cuenta? <a href="/templates/login.html" class="link-info">Inicia sesión</a></p>
         </form>
