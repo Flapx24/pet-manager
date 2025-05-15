@@ -1,69 +1,122 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Historial de Vacunas - Mascotas</title>
-  <!-- Vincular Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/styles.css}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetCare - Historial de Vacunas</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-  <header class="main-header">
-    <nav class="nav-buttons">
-      <button>Agregar mascota</button>
-      <button>Historial vacunas</button>
-      <button>Mostrar datos</button>
-    </nav>
-  </header>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-paw"></i>
+          <h1>PetCare</h1>
+        </div>
+        <p>Sistema de gestión de Mascotas</p>
+      </div>
 
-  <div class="position-relative">
-    <img src="https://cdn.pixabay.com/photo/2020/03/08/11/22/cat-4912213_640.jpg"
-         class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover opacity-50" alt="Fondo">
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Inicio</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-plus-circle"></i>
+          <span>Agregar mascota</span>
+        </a>
+        <a href="#" class="nav-item active">
+          <i class="fas fa-syringe"></i>
+          <span>Vacunas</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Citas</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-cog"></i>
+          <span>Configuración</span>
+        </a>
+      </nav>
 
-    <div class="container mt-5 position-relative z-index-1">
-      <h2 class="text-center mb-4 text-white">Historial de Vacunas</h2>
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <img src="https://ui-avatars.com/api/?name=Usuario&background=0083b0&color=fff" alt="Usuario" />
+          <div class="user-info">
+            <strong>Usuario</strong>
+            <small>Administrador</small>
+          </div>
+        </div>
+      </div>
+    </aside>
 
-      <table class="table table-striped table-bordered bg-white">
-        <thead>
-        <tr>
-          <th>Vacuna</th>
-          <th>Fecha de Aplicación</th>
-          <th>Próxima Fecha de Refuerzo</th>
-          <th>Estado</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Vacuna Antirrábica</td>
-          <td>15/03/2024</td>
-          <td>15/03/2025</td>
-          <td><span class="badge bg-success">Completada</span></td>
-        </tr>
-        <tr>
-          <td>Vacuna Parvovirus</td>
-          <td>05/02/2024</td>
-          <td>05/02/2025</td>
-          <td><span class="badge bg-warning">Pendiente</span></td>
-        </tr>
-        <tr>
-          <td>Vacuna Leptospirosis</td>
-          <td>20/01/2024</td>
-          <td>20/01/2025</td>
-          <td><span class="badge bg-success">Completada</span></td>
-        </tr>
-        <tr>
-          <td>Vacuna Hepatitis Canina</td>
-          <td>10/03/2024</td>
-          <td>10/03/2025</td>
-          <td><span class="badge bg-danger">Vencida</span></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <main class="main-content">
+      <header class="main-header">
+        <div class="header-title">
+          <h2>Historial de Vacunas</h2>
+          <p>Consulta y seguimiento de vacunas aplicadas</p>
+        </div>
+        <div class="header-actions">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Buscar vacuna..." />
+          </div>
+          <button class="notification-btn">
+            <i class="fas fa-bell"></i>
+            <span class="badge">2</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-wrapper">
+        <section class="card table-card">
+          <div class="card-header">
+            <h3><i class="fas fa-syringe"></i> Historial de Vacunas</h3>
+          </div>
+          <div class="table-wrapper">
+            <table class="pet-table">
+              <thead>
+                <tr>
+                  <th>Vacuna</th>
+                  <th>Fecha de Aplicación</th>
+                  <th>Próxima Fecha de Refuerzo</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Vacuna Antirrábica</td>
+                  <td>15/03/2024</td>
+                  <td>15/03/2025</td>
+                  <td><span class="badge bg-success">Completada</span></td>
+                </tr>
+                <tr>
+                  <td>Vacuna Parvovirus</td>
+                  <td>05/02/2024</td>
+                  <td>05/02/2025</td>
+                  <td><span class="badge bg-warning">Pendiente</span></td>
+                </tr>
+                <tr>
+                  <td>Vacuna Leptospirosis</td>
+                  <td>20/01/2024</td>
+                  <td>20/01/2025</td>
+                  <td><span class="badge bg-success">Completada</span></td>
+                </tr>
+                <tr>
+                  <td>Vacuna Hepatitis Canina</td>
+                  <td>10/03/2024</td>
+                  <td>10/03/2025</td>
+                  <td><span class="badge bg-danger">Vencida</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
   </div>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
