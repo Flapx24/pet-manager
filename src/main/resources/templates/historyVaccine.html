@@ -86,32 +86,24 @@
                   <th>Estado</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Vacuna Antirrábica</td>
-                  <td>15/03/2024</td>
-                  <td>15/03/2025</td>
-                  <td><span class="badge bg-success">Completada</span></td>
-                </tr>
-                <tr>
-                  <td>Vacuna Parvovirus</td>
-                  <td>05/02/2024</td>
-                  <td>05/02/2025</td>
-                  <td><span class="badge bg-warning">Pendiente</span></td>
-                </tr>
-                <tr>
-                  <td>Vacuna Leptospirosis</td>
-                  <td>20/01/2024</td>
-                  <td>20/01/2025</td>
-                  <td><span class="badge bg-success">Completada</span></td>
-                </tr>
-                <tr>
-                  <td>Vacuna Hepatitis Canina</td>
-                  <td>10/03/2024</td>
-                  <td>10/03/2025</td>
-                  <td><span class="badge bg-danger">Vencida</span></td>
-                </tr>
-              </tbody>
+                <tbody>
+                  <tr th:each="vacuna : ${vaccines}" 
+                      th:onclick="'window.location.href=\'/animales/' + ${vacuna.animalId} + '/vacunas/' + ${vacuna.id} + '\';'"
+                      style="cursor:pointer;">
+                    <td th:text="${vacuna.name}">Vacuna Nombre</td>
+                    <td th:text="${#dates.format(vacuna.applicationDate, 'dd/MM/yyyy')}">15/03/2024</td>
+                    <td th:text="${vacuna.expirationDate != null ? #dates.format(vacuna.expirationDate, 'dd/MM/yyyy') : 'N/A'}">15/03/2025</td>
+                    <td>
+                      <span th:switch="${vacuna.status}">
+                        <span th:case="'COMPLETED'" class="badge bg-success">Completada</span>
+                        <span th:case="'PENDING'" class="badge bg-warning">Pendiente</span>
+                        <span th:case="'EXPIRED'" class="badge bg-danger">Vencida</span>
+                        <span th:case="*">Desconocido</span>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+
             </table>
           </div>
         </section>

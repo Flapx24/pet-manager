@@ -7,27 +7,22 @@ import com.example.demo.enums.AnimalType;
 
 public class AnimalsRequestDTO {
     // Common fields for all animal types
-    @NotBlank(message = "El nombre es requerido")
     private String name;
 
-    @NotNull(message = "La fecha de nacimiento es requerida")
-    @PastOrPresent(message = "La fecha de nacimiento no puede ser futura")
     private LocalDate birthDate;
 
-    @Positive(message = "El peso debe ser un valor positivo")
     private Double weightKg;
 
     private String color;
     private String notes;
     private String diet;
 
-    @NotNull(message = "El género es requerido")
     private String gender;
 
     private boolean neutered;
     private LocalDate lastDeworming;
 
-    @NotNull(message = "El tipo de animal es requerido")
+    
     private AnimalType animalType;
 
     // Dog specific fields
