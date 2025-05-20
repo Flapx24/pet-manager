@@ -17,7 +17,7 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <i class="fas fa-paw"></i>
-                    <h1>PetCare</h1>
+                    <h1>PetManager</h1>
                 </div>
                 <p>Sistema de gestión de Mascotas</p>
             </div>
@@ -170,8 +170,10 @@
                                 <label for="tamano">Tamaño</label>
                                 <select id="tamano" name="tamano">
                                     <option value="">Seleccionar</option>
-                                    <option value="Pequeño" th:selected="${mascota.tamano == 'Pequeño'}">Pequeño</option>
-                                    <option value="Mediano" th:selected="${mascota.tamano == 'Mediano'}">Mediano</option>
+                                    <option value="Pequeño" th:selected="${mascota.tamano == 'Pequeño'}">Pequeño
+                                    </option>
+                                    <option value="Mediano" th:selected="${mascota.tamano == 'Mediano'}">Mediano
+                                    </option>
                                     <option value="Grande" th:selected="${mascota.tamano == 'Grande'}">Grande</option>
                                 </select>
                             </div>
@@ -191,8 +193,190 @@
                         </div>
                     </div>
 
-                    <!-- Repite para otros tipos de animales (gatos, aves, etc.) -->
-                    <!-- ... -->
+                    <!-- Campos específicos para Gatos -->
+                    <div id="catFields" class="specific-fields" style="display: none;">
+                        <h3><i class="fas fa-cat"></i> Información para Gatos</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="raza">Raza</label>
+                                <input type="text" id="raza" name="raza" th:value="${mascota.raza}">
+                            </div>
+                            <div class="form-group">
+                                <label for="tipoPelaje">Tipo de Pelaje</label>
+                                <input type="text" id="tipoPelaje" name="tipoPelaje" th:value="${mascota.tipoPelaje}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="indoor">Es indoor</label>
+                                <select id="indoor" name="indoor">
+                                    <option value="false" th:selected="${!mascota.indoor}">No</option>
+                                    <option value="true" th:selected="${mascota.indoor}">Sí</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos específicos para Aves -->
+                    <div id="birdFields" class="specific-fields" style="display: none;">
+                        <h3><i class="fas fa-dove"></i> Información para Aves</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="especie">Especie</label>
+                                <input type="text" id="especie" name="especie" th:value="${mascota.especie}">
+                            </div>
+                            <div class="form-group">
+                                <label for="raza">Raza</label>
+                                <input type="text" id="raza" name="raza" th:value="${mascota.raza}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="alasCortadas">Alas cortadas</label>
+                                <select id="alasCortadas" name="alasCortadas">
+                                    <option value="false" th:selected="${!mascota.alasCortadas}">No</option>
+                                    <option value="true" th:selected="${mascota.alasCortadas}">Sí</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="habla">Habla</label>
+                                <select id="habla" name="habla">
+                                    <option value="false" th:selected="${!mascota.habla}">No</option>
+                                    <option value="true" th:selected="${mascota.habla}">Sí</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos específicos para Reptiles -->
+                    <div id="reptileFields" class="specific-fields" style="display: none;">
+                        <h3><i class="fas fa-staff-snake"></i> Información para Reptiles</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="especie">Especie</label>
+                                <input type="text" id="especie" name="especie" th:value="${mascota.especie}">
+                            </div>
+                            <div class="form-group">
+                                <label for="raza">Raza</label>
+                                <input type="text" id="raza" name="raza" th:value="${mascota.raza}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tipoHabitat">Tipo de Hábitat</label>
+                                <input type="text" id="tipoHabitat" name="tipoHabitat"
+                                    th:value="${mascota.tipoHabitat}">
+                            </div>
+                            <div class="form-group">
+                                <label for="requisitosTemperatura">Requisitos de Temperatura</label>
+                                <input type="text" id="requisitosTemperatura" name="requisitosTemperatura"
+                                    th:value="${mascota.requisitosTemperatura}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="venenoso">Venenoso</label>
+                                <select id="venenoso" name="venenoso">
+                                    <option value="false" th:selected="${!mascota.venenoso}">No</option>
+                                    <option value="true" th:selected="${mascota.venenoso}">Sí</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos específicos para Peces -->
+                    <div id="fishFields" class="specific-fields" style="display: none;">
+                        <h3><i class="fas fa-fish"></i> Información para Peces</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="raza">Raza</label>
+                                <input type="text" id="raza" name="raza" th:value="${mascota.raza}">
+                            </div>
+                            <div class="form-group">
+                                <label for="tipoAgua">Tipo de Agua</label>
+                                <select id="tipoAgua" name="tipoAgua">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Dulce" th:selected="${mascota.tipoAgua == 'Dulce'}">Dulce</option>
+                                    <option value="Salada" th:selected="${mascota.tipoAgua == 'Salada'}">Salada</option>
+                                    <option value="Brackish" th:selected="${mascota.tipoAgua == 'Brackish'}">Brackish
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="temperaturaAgua">Temperatura del Agua (°C)</label>
+                                <input type="number" step="0.1" id="temperaturaAgua" name="temperaturaAgua"
+                                    th:value="${mascota.temperaturaAgua}">
+                            </div>
+                            <div class="form-group">
+                                <label for="nivelPH">Nivel de pH</label>
+                                <input type="number" step="0.1" id="nivelPH" name="nivelPH"
+                                    th:value="${mascota.nivelPH}" min="0" max="14">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="comportamientoSocial">Comportamiento Social</label>
+                                <select id="comportamientoSocial" name="comportamientoSocial">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Pacífico"
+                                        th:selected="${mascota.comportamientoSocial == 'Pacífico'}">Pacífico</option>
+                                    <option value="Semi-agresivo"
+                                        th:selected="${mascota.comportamientoSocial == 'Semi-agresivo'}">Semi-agresivo
+                                    </option>
+                                    <option value="Agresivo"
+                                        th:selected="${mascota.comportamientoSocial == 'Agresivo'}">Agresivo</option>
+                                    <option value="Solitario"
+                                        th:selected="${mascota.comportamientoSocial == 'Solitario'}">Solitario</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos específicos para Roedores -->
+                    <div id="rodentFields" class="specific-fields" style="display: none;">
+                        <h3><i class="fas fa-rat"></i> Información para Roedores</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="especie">Especie</label>
+                                <input type="text" id="especie" name="especie" th:value="${mascota.especie}">
+                            </div>
+                            <div class="form-group">
+                                <label for="raza">Raza</label>
+                                <input type="text" id="raza" name="raza" th:value="${mascota.raza}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="entrenadoJaula">Entrenado para jaula</label>
+                                <select id="entrenadoJaula" name="entrenadoJaula">
+                                    <option value="false" th:selected="${!mascota.entrenadoJaula}">No</option>
+                                    <option value="true" th:selected="${mascota.entrenadoJaula}">Sí</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="esperanzaVida">Esperanza de Vida (años)</label>
+                                <input type="number" id="esperanzaVida" name="esperanzaVida"
+                                    th:value="${mascota.esperanzaVida}" min="1" max="20">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="condicionDientes">Condición de los Dientes</label>
+                                <select id="condicionDientes" name="condicionDientes">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Normal" th:selected="${mascota.condicionDientes == 'Normal'}">Normal
+                                    </option>
+                                    <option value="Sobrecrecimiento"
+                                        th:selected="${mascota.condicionDientes == 'Sobrecrecimiento'}">Sobrecrecimiento
+                                    </option>
+                                    <option value="Problemas" th:selected="${mascota.condicionDientes == 'Problemas'}">
+                                        Problemas</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">
@@ -208,28 +392,46 @@
     </div>
 
     <script>
-        function showSpecificFields(animalType) {
-            // Oculta todos los campos específicos primero
-            document.querySelectorAll('.specific-fields').forEach(el => {
-                el.style.display = 'none';
-            });
-
-            // Muestra los campos correspondientes al tipo seleccionado
-            if (animalType === 'DOG') {
-                document.getElementById('dogFields').style.display = 'block';
-            }
-            // Agrega lógica para otros tipos de animales
-            // else if (animalType === 'CAT') { ... }
-        }
-
-        // Mostrar campos específicos si ya hay un tipo seleccionado (en edición)
-        document.addEventListener('DOMContentLoaded', function() {
-            const tipoAnimal = document.getElementById('tipoAnimal').value;
-            if (tipoAnimal) {
-                showSpecificFields(tipoAnimal);
-            }
+    function showSpecificFields(animalType) {
+        document.querySelectorAll('.specific-fields').forEach(el => {
+            el.style.display = 'none';
         });
-    </script>
+
+        switch(animalType) {
+            case 'DOG':
+                document.getElementById('dogFields').style.display = 'block';
+                break;
+            case 'CAT':
+                document.getElementById('catFields').style.display = 'block';
+                break;
+            case 'BIRD':
+                document.getElementById('birdFields').style.display = 'block';
+                break;
+            case 'REPTILE':
+                document.getElementById('reptileFields').style.display = 'block';
+                break;
+            case 'FISH':
+                document.getElementById('fishFields').style.display = 'block';
+                break;
+            case 'RODENT':
+                document.getElementById('rodentFields').style.display = 'block';
+                break;
+            default:
+                break;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const tipoAnimal = document.getElementById('tipoAnimal').value;
+        if (tipoAnimal) {
+            showSpecificFields(tipoAnimal);
+        }
+        
+        document.getElementById('tipoAnimal').addEventListener('change', function() {
+            showSpecificFields(this.value);
+        });
+    });
+</script>
 </body>
 
 </html>

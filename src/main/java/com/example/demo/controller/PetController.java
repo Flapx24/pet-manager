@@ -192,48 +192,45 @@ public class PetController {
         requestBody.put("sterilized", mascotaDTO.isEsterilizado());
         requestBody.put("lastDewormingDate", mascotaDTO.getUltimaDesparasitacion());
         requestBody.put("color", mascotaDTO.getColor());
-
-        Map<String, Object> specificFields = new HashMap<>();
-        specificFields.put("breed", mascotaDTO.getRaza());
+        requestBody.put("breed", mascotaDTO.getRaza());
 
         switch (mascotaDTO.getTipoAnimal()) {
             case DOG:
-                specificFields.put("size", mascotaDTO.getTamano());
-                specificFields.put("coatType", mascotaDTO.getTipoPelaje());
-                specificFields.put("pedigree", mascotaDTO.isPedigree());
+                requestBody.put("size", mascotaDTO.getTamano());
+                requestBody.put("coatType", mascotaDTO.getTipoPelaje());
+                requestBody.put("pedigree", mascotaDTO.isPedigree());
                 break;
             case CAT:
-                specificFields.put("coatType", mascotaDTO.getTipoPelaje());
-                specificFields.put("indoor", mascotaDTO.isIndoor());
+                requestBody.put("coatType", mascotaDTO.getTipoPelaje());
+                requestBody.put("indoor", mascotaDTO.isIndoor());
                 break;
             case BIRD:
-                specificFields.put("species", mascotaDTO.getEspecie());
-                specificFields.put("wingsClipped", mascotaDTO.isAlasCortadas());
-                specificFields.put("talks", mascotaDTO.isHabla());
+                requestBody.put("species", mascotaDTO.getEspecie());
+                requestBody.put("wingsClipped", mascotaDTO.isAlasCortadas());
+                requestBody.put("talks", mascotaDTO.isHabla());
                 break;
             case REPTILE:
-                specificFields.put("species", mascotaDTO.getEspecie());
-                specificFields.put("habitatType", mascotaDTO.getTipoHabitat());
-                specificFields.put("temperatureRequirements", mascotaDTO.getRequisitosTemperatura());
-                specificFields.put("venomous", mascotaDTO.isVenenoso());
+                requestBody.put("species", mascotaDTO.getEspecie());
+                requestBody.put("habitatType", mascotaDTO.getTipoHabitat());
+                requestBody.put("temperatureRequirements", mascotaDTO.getRequisitosTemperatura());
+                requestBody.put("venomous", mascotaDTO.isVenenoso());
                 break;
             case FISH:
-                specificFields.put("waterType", mascotaDTO.getTipoAgua());
-                specificFields.put("waterTemperature", mascotaDTO.getTemperaturaAgua());
-                specificFields.put("phLevel", mascotaDTO.getNivelPH());
-                specificFields.put("socialBehavior", mascotaDTO.getComportamientoSocial());
+                requestBody.put("waterType", mascotaDTO.getTipoAgua());
+                requestBody.put("waterTemperature", mascotaDTO.getTemperaturaAgua());
+                requestBody.put("phLevel", mascotaDTO.getNivelPH());
+                requestBody.put("socialBehavior", mascotaDTO.getComportamientoSocial());
                 break;
             case RODENT:
-                specificFields.put("species", mascotaDTO.getEspecie());
-                specificFields.put("cageTrained", mascotaDTO.isEntrenadoJaula());
-                specificFields.put("lifeExpectancy", mascotaDTO.getEsperanzaVida());
-                specificFields.put("teethCondition", mascotaDTO.getCondicionDientes());
+                requestBody.put("species", mascotaDTO.getEspecie());
+                requestBody.put("cageTrained", mascotaDTO.isEntrenadoJaula());
+                requestBody.put("lifeExpectancy", mascotaDTO.getEsperanzaVida());
+                requestBody.put("teethCondition", mascotaDTO.getCondicionDientes());
                 break;
             default:
                 break;
         }
 
-        requestBody.put("specificFields", specificFields);
         return requestBody;
     }
 
