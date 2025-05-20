@@ -1,8 +1,6 @@
 package com.example.demo.dto;
 import java.time.LocalDate;
 
-import org.antlr.v4.runtime.misc.NotNull;
-
 import com.example.demo.enums.AnimalType;
 
 public class AnimalsRequestDTO {
@@ -54,7 +52,6 @@ public class AnimalsRequestDTO {
     private Integer lifespanYears;
     private String teethCondition;
 
-    // Getters and setters
     public String getName() {
         return name;
     }
