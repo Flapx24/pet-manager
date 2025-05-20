@@ -6,7 +6,7 @@ public class VaccineDTO {
      private Long id;
     private String name;
     private LocalDate applicationDate;
-    private LocalDate expirationDate; // puede ser null
+    private LocalDate expirationDate;
     private String description;
     private Long animalId;
 
