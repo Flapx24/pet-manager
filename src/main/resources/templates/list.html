@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Mascotas - PetCare</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-paw"></i>
+                    <h1>PetCare</h1>
+                </div>
+                <p>Sistema de gestión de Mascotas</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a th:href="@{/mascotas}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <a th:href="@{/mascotas/nueva}" class="nav-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Agregar mascota</span>
+                </a>
+                <a th:href="@{/mascotas}" class="nav-item active">
+                    <i class="fas fa-list"></i>
+                    <span>Lista de mascotas</span>
+                </a>
+                <a th:href="@{/vaccine}" class="nav-item">
+                    <i class="fas fa-syringe"></i>
+                    <span>Vacunas</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Citas</span>
+                </a>
+                <a th:href="@{/api/logout}" class="nav-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Usuario&background=0083b0&color=fff" alt="Usuario">
+                    <div class="user-info">
+                        <strong th:text="${session.name}">Usuario</strong>
+                        <small>Administrador</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h2>Lista de Mascotas</h2>
+                    <p>Gestiona todas las mascotas registradas en el sistema</p>
+                </div>
+                <div class="header-actions">
+                    <a th:href="@{/mascotas/nueva}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nueva Mascota
+                    </a>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar mascota..." id="searchInput">
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div th:if="${error}" class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span th:text="${error}"></span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="pet-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Edad</th>
+                                <th>Peso</th>
+                                <th>Sexo</th>
+                                <th>Raza</th>
+                                <th>Última Desparasitación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="mascota : ${mascotas}">
+                                <td th:text="${mascota.nombre}">Nombre</td>
+                                <td>
+                                    <span class="badge animal-type" th:classappend="${'animal-type-' + mascota.tipoAnimal}">
+                                        <i th:classappend="${mascota.tipoAnimal == 'DOG'} ? 'fas fa-dog' : 
+                                           ${mascota.tipoAnimal == 'CAT'} ? 'fas fa-cat' : 
+                                           ${mascota.tipoAnimal == 'BIRD'} ? 'fas fa-dove' : 
+                                           ${mascota.tipoAnimal == 'FISH'} ? 'fas fa-fish' : 
+                                           ${mascota.tipoAnimal == 'REPTILE'} ? 'fas fa-staff-snake' : 
+                                           'fas fa-paw'"></i>
+                                        <span th:text="${mascota.tipoAnimal.displayName}">Tipo</span>
+                                    </span>
+                                </td>
+                                <td th:text="${mascota.fechaNacimiento != null} ? 
+                                    ${#temporals.difference(mascota.fechaNacimiento, #temporals.createToday()).years} + ' años' : 'N/A'">
+                                    Edad</td>
+                                <td th:text="${mascota.peso != null} ? ${mascota.peso} + ' kg' : 'N/A'">Peso</td>
+                                <td>
+                                    <span class="badge" th:classappend="${mascota.sexo == 'Macho'} ? 'male' : 'female'"
+                                        th:text="${mascota.sexo}">Sexo</span>
+                                </td>
+                                <td th:text="${mascota.raza} ?: 'N/A'">Raza</td>
+                                <td th:text="${mascota.ultimaDesparasitacion} ? 
+                                    ${#temporals.format(mascota.ultimaDesparasitacion, 'dd/MM/yyyy')} : 'N/A'">
+                                    Fecha</td>
+                                <td class="actions">
+                                    <a th:href="@{/mascotas/editar/{id}(id=${mascota.id})}" class="action-btn edit-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form th:action="@{/mascotas/eliminar/{id}(id=${mascota.id})}" method="post"
+                                        onsubmit="return confirm('¿Estás seguro de eliminar esta mascota?');">
+                                        <button type="submit" class="action-btn delete-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Filtrado de la tabla
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const input = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.pet-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(input) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

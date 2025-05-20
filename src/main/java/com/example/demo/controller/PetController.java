@@ -55,14 +55,14 @@ public class PetController {
             model.addAttribute("error", "Error al obtener las mascotas: " + e.getMessage());
         }
 
-        return "mascotas/list";
+        return "list";
     }
 
     @GetMapping("/nueva")
     public String mostrarFormularioNuevaMascota(Model model) {
         model.addAttribute("mascota", new MascotaDTO());
         model.addAttribute("tiposAnimal", AnimalType.values());
-        return "mascotas/form";
+        return "form";
     }
 
     @PostMapping
@@ -118,7 +118,7 @@ public class PetController {
                 MascotaDTO mascota = convertToMascotaDTO(mascotaApi);
                 model.addAttribute("mascota", mascota);
                 model.addAttribute("tiposAnimal", AnimalType.values());
-                return "mascotas/form";
+                return "form";
             }
         } catch (Exception e) {
             return "redirect:/mascotas?error=edit";

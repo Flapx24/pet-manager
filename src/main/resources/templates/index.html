@@ -26,9 +26,13 @@
                     <i class="fas fa-home"></i>
                     <span>Inicio</span>
                 </a>
-                <a href="#formulario-mascota" class="nav-item">
+                <a th:href="@{/mascotas/nueva}" class="nav-item">
                     <i class="fas fa-plus-circle"></i>
                     <span>Agregar mascota</span>
+                </a>
+                <a th:href="@{/mascotas}" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Lista de mascotas</span>
                 </a>
                 <a th:href="@{/vaccine}" class="nav-item">
                     <i class="fas fa-syringe"></i>
@@ -108,94 +112,17 @@
                     </div>
                 </section>
 
-                <div class="main-cards">
-                    <section id="formulario-mascota" class="card form-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-plus-circle"></i> Registrar Nueva Mascota</h3>
-                        </div>
-                        <form th:action="@{/mascotas}" method="post" class="pet-form">
-                            <div class="form-group">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" id="nombre" name="nombre" required />
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="edad">Edad (años)</label>
-                                    <input type="number" id="edad" name="edad" min="0" max="30" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="peso">Peso (kg)</label>
-                                    <input type="number" step="0.1" id="peso" name="peso" min="0.1" max="100"
-                                        required />
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="sexo">Sexo</label>
-                                    <select id="sexo" name="sexo" required>
-                                        <option value="" disabled selected>Seleccionar</option>
-                                        <option value="Macho">Macho</option>
-                                        <option value="Hembra">Hembra</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="raza">Raza</label>
-                                    <input type="text" id="raza" name="raza" required />
-                                </div>
-                            </div>
-                            <button type="submit" class="submit-btn">
-                                <i class="fas fa-save"></i> Guardar Mascota
-                            </button>
-                        </form>
-                    </section>
-
-                    <section class="card table-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-list"></i> Listado de Mascotas</h3>
-                            <div class="table-actions">
-                                <button class="action-btn"><i class="fas fa-filter"></i></button>
-                                <button class="action-btn"><i class="fas fa-download"></i></button>
-                            </div>
-                        </div>
-                        <div class="table-wrapper">
-                            <table class="pet-table">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Edad</th>
-                                        <th>Peso</th>
-                                        <th>Sexo</th>
-                                        <th>Raza</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="mascota : ${mascotas}">
-                                        <td th:text="${mascota.nombre}">Nombre</td>
-                                        <td
-                                            th:text="${mascota.birthDate != null} ? ${#temporals.difference(mascota.birthDate, #temporals.createToday()).years} : 'N/A'">
-                                            Edad</td>
-                                        <td th:text="${mascota.peso} + ' kg'">Peso</td>
-                                        <td>
-                                            <span class="badge"
-                                                th:classappend="${mascota.sexo == 'Macho'} ? 'male' : 'female'"
-                                                th:text="${mascota.sexo}">Sexo</span>
-                                        </td>
-                                        <td th:text="${mascota.raza}">Raza</td>
-                                        <td class="actions">
-                                            <form th:action="@{/mascotas/eliminar/{id}(id=${mascota.id})}"
-                                                method="post">
-                                                <button type="submit" class="delete-btn"
-                                                    onclick="return confirm('¿Estás seguro de eliminar esta mascota?')">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
+                <div class="welcome-message">
+                    <h3>Bienvenido a PetCare</h3>
+                    <p>Selecciona una opción del menú para comenzar a gestionar tus mascotas</p>
+                    <div class="action-buttons">
+                        <a th:href="@{/mascotas/nueva}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Agregar nueva mascota
+                        </a>
+                        <a th:href="@{/mascotas}" class="btn btn-secondary">
+                            <i class="fas fa-list"></i> Ver lista de mascotas
+                        </a>
+                    </div>
                 </div>
             </div>
         </main>
