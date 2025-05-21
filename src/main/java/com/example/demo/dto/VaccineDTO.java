@@ -2,10 +2,14 @@ package com.example.demo.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class VaccineDTO {
      private Long id;
     private String name;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate applicationDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate expirationDate;
     private String description;
     private Long animalId;

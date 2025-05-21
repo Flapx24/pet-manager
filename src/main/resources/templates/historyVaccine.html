@@ -1,114 +1,50 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PetCare - Historial de Vacunas</title>
-  <link rel="stylesheet" href="/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <meta charset="UTF-8">
+    <title>Historial de Vacunas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tu CSS personalizado -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
-  <div class="app-container">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <i class="fas fa-paw"></i>
-          <h1>PetCare</h1>
-        </div>
-        <p>Sistema de gestión de Mascotas</p>
-      </div>
+<body class="bg-light">
 
-      <nav class="sidebar-nav">
-        <a href="#" class="nav-item">
-          <i class="fas fa-home"></i>
-          <span>Inicio</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-plus-circle"></i>
-          <span>Agregar mascota</span>
-        </a>
-        <a href="#" class="nav-item active">
-          <i class="fas fa-syringe"></i>
-          <span>Vacunas</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-calendar-alt"></i>
-          <span>Citas</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-cog"></i>
-          <span>Configuración</span>
-        </a>
-      </nav>
+<div class="container mt-5">
+    <h2 class="mb-4">Historial de Vacunas</h2>
 
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <img src="https://ui-avatars.com/api/?name=Usuario&background=0083b0&color=fff" alt="Usuario" />
-          <div class="user-info">
-            <strong>Usuario</strong>
-            <small>Administrador</small>
-          </div>
-        </div>
-      </div>
-    </aside>
+    <!-- Si no existe el atributo vaccines o está vacío -->
+    <div th:if="${vaccines == null or #lists.isEmpty(vaccines)}" class="alert alert-info">
+        No hay vacunas registradas para esta mascota.
+    </div>
 
-    <main class="main-content">
-      <header class="main-header">
-        <div class="header-title">
-          <h2>Historial de Vacunas</h2>
-          <p>Consulta y seguimiento de vacunas aplicadas</p>
-        </div>
-        <div class="header-actions">
-          <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Buscar vacuna..." />
-          </div>
-          <button class="notification-btn">
-            <i class="fas fa-bell"></i>
-            <span class="badge">2</span>
-          </button>
-        </div>
-      </header>
-
-      <div class="content-wrapper">
-        <section class="card table-card">
-          <div class="card-header">
-            <h3><i class="fas fa-syringe"></i> Historial de Vacunas</h3>
-          </div>
-          <div class="table-wrapper">
-            <table class="pet-table">
-              <thead>
+    <!-- Si vaccines existe y tiene elementos -->
+    <div th:if="${vaccines != null and !#lists.isEmpty(vaccines)}">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
                 <tr>
-                  <th>Vacuna</th>
-                  <th>Fecha de Aplicación</th>
-                  <th>Próxima Fecha de Refuerzo</th>
-                  <th>Estado</th>
+                    <th>Nombre</th>
+                    <th>Fecha de Aplicación</th>
+                    <th>Fecha de Expiración</th>
+                    <th>Confirmada</th>
                 </tr>
-              </thead>
-                <tbody>
-                  <tr th:each="vacuna : ${vaccines}" 
-                      th:onclick="'window.location.href=\'/animales/' + ${vacuna.animalId} + '/vacunas/' + ${vacuna.id} + '\';'"
-                      style="cursor:pointer;">
-                    <td th:text="${vacuna.name}">Vacuna Nombre</td>
-                    <td th:text="${#dates.format(vacuna.applicationDate, 'dd/MM/yyyy')}">15/03/2024</td>
-                    <td th:text="${vacuna.expirationDate != null ? #dates.format(vacuna.expirationDate, 'dd/MM/yyyy') : 'N/A'}">15/03/2025</td>
-                    <td>
-                      <span th:switch="${vacuna.status}">
-                        <span th:case="'COMPLETED'" class="badge bg-success">Completada</span>
-                        <span th:case="'PENDING'" class="badge bg-warning">Pendiente</span>
-                        <span th:case="'EXPIRED'" class="badge bg-danger">Vencida</span>
-                        <span th:case="*">Desconocido</span>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
+            </thead>
+            <tbody>
+                <tr th:each="vacuna : ${vaccines}">
+                  <td th:text="${vacuna.id}">1</td>
+                  <td th:text="${vacuna.name}">Vacuna X</td>
+                  <td th:text="${vacuna.applicationDate}">2025-05-21</td>
+                  <td th:text="${vacuna.expirationDate}">2026-05-21</td>
+                  <td th:text="${vacuna.description}">Descripción</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-            </table>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
+    <div class="mt-4">
+        <a href="/" class="btn btn-secondary">Volver al panel</a>
+    </div>
+</div>
+
 </body>
 </html>

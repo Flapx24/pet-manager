@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,39 +38,57 @@ public class VaccineController {
 
     String baseUrl = "http://localhost:8080/api/animals/";
 
-    public List<VaccineDTO> getVaccinesFromApi(Long animalId, String jwtToken) {
-        String url = UriComponentsBuilder.fromHttpUrl(baseUrl + animalId + "/vaccines")
-            .queryParam("page", 0)
-            .queryParam("size", 10)
-            .queryParam("sortBy", "applicationDate")
-            .queryParam("direction", "DESC")
-            .queryParam("dateType", "application")
-            .toUriString();
+    @GetMapping("/{animalId}/vaccines")
+    public String showVaccines(
+        @PathVariable Long animalId,
+        @RequestHeader("Authorization") String authHeader,
+        Model model) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(jwtToken);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String url = UriComponentsBuilder.fromHttpUrl(baseUrl + animalId + "/vaccines")
+                    .queryParam("page", 0)
+                    .queryParam("size", 10)
+                    .queryParam("sortBy", "applicationDate")
+                    .queryParam("direction", "DESC")
+                    .queryParam("dateType", "application")
+                    .toUriString();
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token);
+            headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        ResponseEntity<Map> response = restTemplate.exchange(
-            url,
-            HttpMethod.GET,
-            entity,
-            Map.class
-        );
+            HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, Object> body = response.getBody();
-        Map<String, Object> data = (Map<String, Object>) body.get("data");
-        List<Map<String, Object>> vaccinesData = (List<Map<String, Object>>) data.get("vaccines");
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    entity,
+                    String.class
+            );
 
-        ObjectMapper mapper = new ObjectMapper();
-        List<VaccineDTO> vaccines = vaccinesData.stream()
-            .map(item -> mapper.convertValue(item, VaccineDTO.class))
-            .collect(Collectors.toList());
+            JsonNode root = objectMapper.readTree(response.getBody());
+            JsonNode dataNode = root.path("data");
+            JsonNode vaccinesNode = dataNode.path("vaccines");
 
-        return vaccines;
+            List<VaccineDTO> vaccines = new ArrayList<>();
+            for (JsonNode node : vaccinesNode) {
+                VaccineDTO vaccine = objectMapper.treeToValue(node, VaccineDTO.class);
+                vaccines.add(vaccine);
+            }
+
+            model.addAttribute("vaccines", vaccines);
+            model.addAttribute("pageInfo", dataNode);
+
+            return "historyVaccine";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "No se pudieron obtener las vacunas");
+            return "error";
+        }
     }
+
 
     // Get vaccine by id
     @GetMapping("/{animalId}/vaccine/{vaccineId}")
@@ -78,54 +97,53 @@ public class VaccineController {
         @PathVariable Long vaccineId,
         Model model) {
 
-    String url = baseUrl +  animalId + "/vaccines" + vaccineId;
+        String url = baseUrl +  animalId + "/vaccines" + vaccineId;
 
-    try {
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        try {
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-        JsonNode root = objectMapper.readTree(response.getBody());
-        JsonNode dataNode = root.path("data");
+            JsonNode root = objectMapper.readTree(response.getBody());
+            JsonNode dataNode = root.path("data");
 
-        VaccineDTO vaccine = objectMapper.treeToValue(dataNode, VaccineDTO.class);
-        model.addAttribute("vaccine", vaccine);
+            VaccineDTO vaccine = objectMapper.treeToValue(dataNode, VaccineDTO.class);
+            model.addAttribute("vaccine", vaccine);
 
-        return "vaccine-detail";
+            return "historyVaccine";
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        model.addAttribute("error", "No se pudo obtener la vacuna");
-        return "error";
-    }
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "No se pudo obtener la vacuna");
+            return "error";
+        }
     }
 
     // Creation of a vaccine for a specific animal
     @PostMapping("/animals/{animalId}/vaccines")
-    public ResponseEntity<?> createVaccineForAnimal(@PathVariable Long animalId,
-                                                    @RequestBody VaccineDTO vaccineDTO,
-                                                    @RequestHeader("Authorization") String authHeader) {
+    public String createVaccineForAnimal(@PathVariable Long animalId,
+                                     @ModelAttribute VaccineDTO vaccineDTO,
+                                     @RequestParam("token") String token,
+                                     Model model) {
         try {
-            String token = authHeader.replace("Bearer ", "");
-            String url = baseUrl + "/api/animals/" + animalId + "/vaccines";
+            String url = baseUrl + animalId + "/vaccines";
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(token);
+            headers.setBearerAuth(token);  // usa el token recibido como parámetro
 
             HttpEntity<VaccineDTO> requestEntity = new HttpEntity<>(vaccineDTO, headers);
 
-            ResponseEntity<VaccineDTO> response = restTemplate.exchange(
+            restTemplate.exchange(
                 url,
                 HttpMethod.POST,
                 requestEntity,
                 VaccineDTO.class
             );
 
-            return ResponseEntity.ok(response.getBody());
+            return "redirect:/mascotas";
 
-        } catch (HttpClientErrorException e) {
-            return ResponseEntity.status(e.getStatusCode()).body("Error desde API externa: " + e.getResponseBodyAsString());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno: " + e.getMessage());
+            model.addAttribute("error", "Error al crear vacuna: " + e.getMessage());
+            return "formVaccine";
         }
     }
 
@@ -234,7 +252,7 @@ public class VaccineController {
             model.addAttribute("vaccines", vaccines);
             model.addAttribute("pageInfo", dataNode);
 
-            return "non-expired-vaccines"; // vista HTML que mostraría las vacunas
+            return "non-expired-vaccines";
 
         } catch (Exception e) {
             e.printStackTrace();

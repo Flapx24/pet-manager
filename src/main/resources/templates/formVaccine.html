@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Agregar Vacuna</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Agregar Vacuna</h2>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{/animals/{animalId}/vaccines(animalId=${animalId})}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre de la Vacuna</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Ejemplo: Vacuna Rabia" required />
+        </div>
+        <!--<div class="mb-3">
+            <label for="applicationDate" class="form-label">Fecha de Aplicación</label>
+            <input type="date" class="form-control" id="applicationDate" name="applicationDate" required />
+        </div>-->
+        <div class="mb-3">
+            <label for="expirationDate" class="form-label">Fecha de Expiración</label>
+            <input type="date" class="form-control" id="expirationDate" name="expirationDate" />
+        </div>
+        <div class="mb-3">
+            <label for="observations" class="form-label">Observaciones</label>
+            <textarea class="form-control" id="observations" name="observations" rows="3" placeholder="Opcional"></textarea>
+        </div>
+        <input type="hidden" name="token" th:value="${token}"/>
+        <button type="submit" class="btn btn-primary">Agregar Vacuna</button>
+    </form>
+</div>
+</body>
+</html>

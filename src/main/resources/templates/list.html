@@ -119,7 +119,7 @@
                                 <th>Mascota</th>
                                 <th>Tipo</th>
                                 <th>Edad</th>
-                                <th>Información</th>
+                                <th>Vacunas</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -163,92 +163,12 @@
                                     <span th:if="${mascota.fechaNacimiento == null}" class="empty-value">N/A</span>
                                 </td>
                                 <td>
-                                    <div class="pet-details">
-                                        <div th:switch="${mascota.tipoAnimal}">
-                                            <!-- Perros -->
-                                            <div th:case="'DOG'">
-                                                <span th:if="${mascota.raza != null}">
-                                                    <i class="fas fa-dna"></i>
-                                                    <span th:text="${mascota.raza}"></span>
-                                                </span>
-                                                <span th:if="${mascota.tamano != null}">
-                                                    <i class="fas fa-arrows-up-down"></i>
-                                                    <span th:text="${mascota.tamano}"></span>
-                                                </span>
-                                                <span th:if="${mascota.pedigree}">
-                                                    <i class="fas fa-award"></i>
-                                                    <span>Pedigree</span>
-                                                </span>
-                                            </div>
-
-                                            <!-- Gatos -->
-                                            <div th:case="'CAT'">
-                                                <span th:if="${mascota.raza != null}">
-                                                    <i class="fas fa-dna"></i>
-                                                    <span th:text="${mascota.raza}"></span>
-                                                </span>
-                                                <span th:if="${mascota.indoor}">
-                                                    <i class="fas fa-home"></i>
-                                                    <span>Indoor</span>
-                                                </span>
-                                            </div>
-
-                                            <!-- Aves -->
-                                            <div th:case="'BIRD'">
-                                                <span th:if="${mascota.especie != null}">
-                                                    <i class="fas fa-dna"></i>
-                                                    <span th:text="${mascota.especie}"></span>
-                                                </span>
-                                                <span th:if="${mascota.habla}">
-                                                    <i class="fas fa-comment-dots"></i>
-                                                    <span>Habla</span>
-                                                </span>
-                                                <span th:if="${mascota.alasCortadas}">
-                                                    <i class="fas fa-cut"></i>
-                                                    <span>Alas cortadas</span>
-                                                </span>
-                                            </div>
-
-                                            <!-- Reptiles -->
-                                            <div th:case="'REPTILE'">
-                                                <span th:if="${mascota.especie != null}">
-                                                    <i class="fas fa-dna"></i>
-                                                    <span th:text="${mascota.especie}"></span>
-                                                </span>
-                                                <span th:if="${mascota.venenoso}">
-                                                    <i class="fas fa-skull-crossbones"></i>
-                                                    <span>Venenoso</span>
-                                                </span>
-                                            </div>
-
-                                            <!-- Peces -->
-                                            <div th:case="'FISH'">
-                                                <span th:if="${mascota.tipoAgua != null}">
-                                                    <i class="fas fa-water"></i>
-                                                    <span th:text="${mascota.tipoAgua}"></span>
-                                                </span>
-                                            </div>
-
-                                            <!-- Roedores -->
-                                            <div th:case="'RODENT'">
-                                                <span th:if="${mascota.especie != null}">
-                                                    <i class="fas fa-dna"></i>
-                                                    <span th:text="${mascota.especie}"></span>
-                                                </span>
-                                                <span th:if="${mascota.entrenadoJaula}">
-                                                    <i class="fas fa-cage"></i>
-                                                    <span>Entrenado jaula</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <span th:if="${mascota.ultimaDesparasitacion != null}">
-                                            <i class="fas fa-syringe"></i>
-                                            <span>Últ. desparasitación:
-                                                <span
-                                                    th:text="${#dates.format(mascota.ultimaDesparasitacion, 'dd/MM/yyyy')}"></span>
-                                            </span>
-                                        </span>
-                                    </div>
+                                    <a th:href="@{/animals/{animalId}/vaccines(animalId=${mascota.id})}" class="btn btn-primary btn-sm">
+                                       <i class="fas fa-plus"></i> Agregar vacuna
+                                    </a>
+                                    <a th:href="@{/animales/{animalId}/vaccines(id=${animal.id})}" class="btn btn-primary">
+                                        Ver vacunas
+                                    </a>
                                 </td>
                                 <td class="actions">
                                     <a th:href="@{/mascotas/editar/{id}(id=${mascota.id})}" class="action-btn edit-btn">
