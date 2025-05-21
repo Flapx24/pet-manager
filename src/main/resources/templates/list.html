@@ -9,54 +9,85 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .animal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .animal-badge i {
+            font-size: 14px;
+        }
+
+        .animal-type-DOG {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .animal-type-CAT {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .animal-type-BIRD {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+
+        .animal-type-FISH {
+            background-color: #e0f7fa;
+            color: #00838f;
+        }
+
+        .animal-type-REPTILE {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .animal-type-RODENT {
+            background-color: #fbe9e7;
+            color: #d84315;
+        }
+
+        .pet-details {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .pet-details span {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .pet-details i {
+            margin-right: 3px;
+            width: 15px;
+            text-align: center;
+            color: #777;
+        }
+
+        .empty-value {
+            color: #999;
+            font-style: italic;
+        }
+
+        .age-badge {
+            background-color: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="app-container">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-paw"></i>
-                    <h1>PetCare</h1>
-                </div>
-                <p>Sistema de gestión de Mascotas</p>
-            </div>
-            <nav class="sidebar-nav">
-                <a th:href="@{/mascotas}" class="nav-item">
-                    <i class="fas fa-home"></i>
-                    <span>Inicio</span>
-                </a>
-                <a th:href="@{/mascotas/nueva}" class="nav-item">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Agregar mascota</span>
-                </a>
-                <a th:href="@{/mascotas}" class="nav-item active">
-                    <i class="fas fa-list"></i>
-                    <span>Lista de mascotas</span>
-                </a>
-                <a th:href="@{/vaccine}" class="nav-item">
-                    <i class="fas fa-syringe"></i>
-                    <span>Vacunas</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Citas</span>
-                </a>
-                <a th:href="@{/api/logout}" class="nav-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Cerrar sesión</span>
-                </a>
-            </nav>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <img src="https://ui-avatars.com/api/?name=Usuario&background=0083b0&color=fff" alt="Usuario">
-                    <div class="user-info">
-                        <strong th:text="${session.name}">Usuario</strong>
-                        <small>Administrador</small>
-                    </div>
-                </div>
-            </div>
-        </aside>
 
         <main class="main-content">
             <header class="main-header">
@@ -85,42 +116,140 @@
                     <table class="pet-table">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
+                                <th>Mascota</th>
                                 <th>Tipo</th>
                                 <th>Edad</th>
-                                <th>Peso</th>
-                                <th>Sexo</th>
-                                <th>Raza</th>
-                                <th>Última Desparasitación</th>
+                                <th>Información</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="mascota : ${mascotas}">
-                                <td th:text="${mascota.nombre}">Nombre</td>
                                 <td>
-                                    <span class="badge animal-type" th:classappend="${'animal-type-' + mascota.tipoAnimal}">
-                                        <i th:classappend="${mascota.tipoAnimal == 'DOG'} ? 'fas fa-dog' : 
-                                           ${mascota.tipoAnimal == 'CAT'} ? 'fas fa-cat' : 
-                                           ${mascota.tipoAnimal == 'BIRD'} ? 'fas fa-dove' : 
-                                           ${mascota.tipoAnimal == 'FISH'} ? 'fas fa-fish' : 
-                                           ${mascota.tipoAnimal == 'REPTILE'} ? 'fas fa-staff-snake' : 
-                                           'fas fa-paw'"></i>
-                                        <span th:text="${mascota.tipoAnimal.displayName}">Tipo</span>
+                                    <strong th:text="${mascota.nombre}">Nombre</strong>
+                                    <div class="pet-details">
+                                        <span th:if="${mascota.peso != null}">
+                                            <i class="fas fa-weight"></i>
+                                            <span th:text="${mascota.peso} + ' kg'"></span>
+                                        </span>
+                                        <span th:if="${mascota.sexo != null}">
+                                            <i class="fas fa-venus-mars"></i>
+                                            <span th:text="${mascota.sexo}"></span>
+                                        </span>
+                                        <span th:if="${mascota.esterilizado}">
+                                            <i class="fas fa-sterling-sign"></i>
+                                            <span>Esterilizado</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="animal-badge" th:classappend="${'animal-type-' + mascota.tipoAnimal}">
+                                        <i th:switch="${mascota.tipoAnimal}">
+                                            <i th:case="'DOG'" class="fas fa-dog"></i>
+                                            <i th:case="'CAT'" class="fas fa-cat"></i>
+                                            <i th:case="'BIRD'" class="fas fa-dove"></i>
+                                            <i th:case="'FISH'" class="fas fa-fish"></i>
+                                            <i th:case="'REPTILE'" class="fas fa-staff-snake"></i>
+                                            <i th:case="'RODENT'" class="fas fa-rat"></i>
+                                            <i th:case="*" class="fas fa-paw"></i>
+                                        </i>
+                                        <span th:text="${mascota.tipoAnimal?.displayName}">Tipo</span>
                                     </span>
                                 </td>
-                                <td th:text="${mascota.fechaNacimiento != null} ? 
-                                    ${#temporals.difference(mascota.fechaNacimiento, #temporals.createToday()).years} + ' años' : 'N/A'">
-                                    Edad</td>
-                                <td th:text="${mascota.peso != null} ? ${mascota.peso} + ' kg' : 'N/A'">Peso</td>
                                 <td>
-                                    <span class="badge" th:classappend="${mascota.sexo == 'Macho'} ? 'male' : 'female'"
-                                        th:text="${mascota.sexo}">Sexo</span>
+                                    <span th:if="${mascota.fechaNacimiento != null}"
+                                        th:text="${(T(java.time.LocalDate).now().getYear() - mascota.fechaNacimiento.getYear())} + ' años'">
+                                    </span>
+                                    <span th:if="${mascota.fechaNacimiento == null}" class="empty-value">N/A</span>
                                 </td>
-                                <td th:text="${mascota.raza} ?: 'N/A'">Raza</td>
-                                <td th:text="${mascota.ultimaDesparasitacion} ? 
-                                    ${#temporals.format(mascota.ultimaDesparasitacion, 'dd/MM/yyyy')} : 'N/A'">
-                                    Fecha</td>
+                                <td>
+                                    <div class="pet-details">
+                                        <div th:switch="${mascota.tipoAnimal}">
+                                            <!-- Perros -->
+                                            <div th:case="'DOG'">
+                                                <span th:if="${mascota.raza != null}">
+                                                    <i class="fas fa-dna"></i>
+                                                    <span th:text="${mascota.raza}"></span>
+                                                </span>
+                                                <span th:if="${mascota.tamano != null}">
+                                                    <i class="fas fa-arrows-up-down"></i>
+                                                    <span th:text="${mascota.tamano}"></span>
+                                                </span>
+                                                <span th:if="${mascota.pedigree}">
+                                                    <i class="fas fa-award"></i>
+                                                    <span>Pedigree</span>
+                                                </span>
+                                            </div>
+
+                                            <!-- Gatos -->
+                                            <div th:case="'CAT'">
+                                                <span th:if="${mascota.raza != null}">
+                                                    <i class="fas fa-dna"></i>
+                                                    <span th:text="${mascota.raza}"></span>
+                                                </span>
+                                                <span th:if="${mascota.indoor}">
+                                                    <i class="fas fa-home"></i>
+                                                    <span>Indoor</span>
+                                                </span>
+                                            </div>
+
+                                            <!-- Aves -->
+                                            <div th:case="'BIRD'">
+                                                <span th:if="${mascota.especie != null}">
+                                                    <i class="fas fa-dna"></i>
+                                                    <span th:text="${mascota.especie}"></span>
+                                                </span>
+                                                <span th:if="${mascota.habla}">
+                                                    <i class="fas fa-comment-dots"></i>
+                                                    <span>Habla</span>
+                                                </span>
+                                                <span th:if="${mascota.alasCortadas}">
+                                                    <i class="fas fa-cut"></i>
+                                                    <span>Alas cortadas</span>
+                                                </span>
+                                            </div>
+
+                                            <!-- Reptiles -->
+                                            <div th:case="'REPTILE'">
+                                                <span th:if="${mascota.especie != null}">
+                                                    <i class="fas fa-dna"></i>
+                                                    <span th:text="${mascota.especie}"></span>
+                                                </span>
+                                                <span th:if="${mascota.venenoso}">
+                                                    <i class="fas fa-skull-crossbones"></i>
+                                                    <span>Venenoso</span>
+                                                </span>
+                                            </div>
+
+                                            <!-- Peces -->
+                                            <div th:case="'FISH'">
+                                                <span th:if="${mascota.tipoAgua != null}">
+                                                    <i class="fas fa-water"></i>
+                                                    <span th:text="${mascota.tipoAgua}"></span>
+                                                </span>
+                                            </div>
+
+                                            <!-- Roedores -->
+                                            <div th:case="'RODENT'">
+                                                <span th:if="${mascota.especie != null}">
+                                                    <i class="fas fa-dna"></i>
+                                                    <span th:text="${mascota.especie}"></span>
+                                                </span>
+                                                <span th:if="${mascota.entrenadoJaula}">
+                                                    <i class="fas fa-cage"></i>
+                                                    <span>Entrenado jaula</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span th:if="${mascota.ultimaDesparasitacion != null}">
+                                            <i class="fas fa-syringe"></i>
+                                            <span>Últ. desparasitación:
+                                                <span
+                                                    th:text="${#dates.format(mascota.ultimaDesparasitacion, 'dd/MM/yyyy')}"></span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
                                 <td class="actions">
                                     <a th:href="@{/mascotas/editar/{id}(id=${mascota.id})}" class="action-btn edit-btn">
                                         <i class="fas fa-edit"></i>
@@ -133,6 +262,9 @@
                                     </form>
                                 </td>
                             </tr>
+                            <tr th:if="${mascotas == null or mascotas.empty}">
+                                <td colspan="5" class="empty-value">No hay mascotas registradas</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -141,11 +273,10 @@
     </div>
 
     <script>
-        // Filtrado de la tabla
-        document.getElementById('searchInput').addEventListener('keyup', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
             const input = this.value.toLowerCase();
             const rows = document.querySelectorAll('.pet-table tbody tr');
-            
+
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(input) ? '' : 'none';
