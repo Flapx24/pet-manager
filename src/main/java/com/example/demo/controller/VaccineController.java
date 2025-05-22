@@ -38,7 +38,7 @@ public class VaccineController {
 
     String baseUrl = "http://localhost:8080/api/animals/";
 
-    @GetMapping("/{animalId}/vaccines")
+    @GetMapping("/animals/{animalId}/vaccines")
     public String showVaccines(
         @PathVariable Long animalId,
         @RequestHeader("Authorization") String authHeader,
