@@ -23,11 +23,11 @@ public class HomeController {
     public String index() {
         return "index";
     }
-
-    @GetMapping("/vaccine")
-    public String vaccine() {
-        return "vaccine";
-    }
+    /* 
+    @GetMapping("/animals/{animalId}/vaccines")
+    public String Listvaccine() {
+        return "historyVaccine";
+    }*/
 
     @GetMapping("/animals/{animalId}/vaccines/form")
     public String formVaccine(@PathVariable Long animalId, Model model, HttpSession session) {
@@ -39,6 +39,7 @@ public class HomeController {
 
         return "formVaccine";
     }
+
 
     
 }
