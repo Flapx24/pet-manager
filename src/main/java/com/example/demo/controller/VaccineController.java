@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,22 +29,30 @@ import com.example.demo.dto.VaccineDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class VaccineController {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     String baseUrl = "http://localhost:8080/api/animals/";
 
     @GetMapping("/animals/{animalId}/vaccines")
     public String showVaccines(
         @PathVariable Long animalId,
-        @RequestHeader("Authorization") String authHeader,
+        HttpSession session,
         Model model) {
 
         try {
-            String token = authHeader.replace("Bearer ", "");
+            String token = (String) session.getAttribute("token");
+
+            if (token == null) {
+                model.addAttribute("error", "Token no encontrado en sesión");
+                return "error";
+            }
             String url = UriComponentsBuilder.fromHttpUrl(baseUrl + animalId + "/vaccines")
                     .queryParam("page", 0)
                     .queryParam("size", 10)
@@ -56,7 +66,6 @@ public class VaccineController {
             headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
             HttpEntity<String> entity = new HttpEntity<>(headers);
-
             ResponseEntity<String> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
