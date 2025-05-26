@@ -163,8 +163,9 @@
                                     <span th:if="${mascota.fechaNacimiento == null}" class="empty-value">N/A</span>
                                 </td>
                                 <td>
-                                    <a th:href="@{/animals/{animalId}/vaccines/form(animalId=${mascota.id})}" class="btn btn-primary btn-sm">
-                                       <i class="fas fa-plus"></i> Agregar vacuna
+                                    <a th:href="@{/animals/{animalId}/vaccines/form(animalId=${mascota.id})}"
+                                        class="btn btn-primary btn-sm">
+                                        <i class="fas fa-plus"></i> Agregar vacuna
                                     </a>
                                     <a th:href="@{/animals/{id}/vaccines(id=${mascota.id})}" class="btn btn-primary">
                                         Ver vacunas

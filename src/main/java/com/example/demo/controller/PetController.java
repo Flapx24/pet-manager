@@ -192,40 +192,57 @@ public class PetController {
         requestBody.put("sterilized", mascotaDTO.isEsterilizado());
         requestBody.put("lastDewormingDate", mascotaDTO.getUltimaDesparasitacion());
         requestBody.put("color", mascotaDTO.getColor());
-        requestBody.put("breed", mascotaDTO.getRaza());
+
+        if (mascotaDTO.getRaza() != null && !mascotaDTO.getRaza().isEmpty()) {
+            requestBody.put("breed", mascotaDTO.getRaza());
+        }
 
         switch (mascotaDTO.getTipoAnimal()) {
             case DOG:
-                requestBody.put("size", mascotaDTO.getTamano());
-                requestBody.put("coatType", mascotaDTO.getTipoPelaje());
+                if (mascotaDTO.getTamano() != null)
+                    requestBody.put("size", mascotaDTO.getTamano());
+                if (mascotaDTO.getTipoPelaje() != null)
+                    requestBody.put("coatType", mascotaDTO.getTipoPelaje());
                 requestBody.put("pedigree", mascotaDTO.isPedigree());
                 break;
             case CAT:
-                requestBody.put("coatType", mascotaDTO.getTipoPelaje());
-                requestBody.put("indoor", mascotaDTO.isIndoor());
+                if (mascotaDTO.getTipoPelaje() != null)
+                    requestBody.put("coatType", mascotaDTO.getTipoPelaje());
+                requestBody.put("indoorOnly", mascotaDTO.isIndoor());
                 break;
             case BIRD:
-                requestBody.put("species", mascotaDTO.getEspecie());
-                requestBody.put("wingsClipped", mascotaDTO.isAlasCortadas());
-                requestBody.put("talks", mascotaDTO.isHabla());
+                if (mascotaDTO.getEspecie() != null)
+                    requestBody.put("species", mascotaDTO.getEspecie());
+                requestBody.put("clippedWings", mascotaDTO.isAlasCortadas());
+                requestBody.put("talkingAbility", mascotaDTO.isHabla());
                 break;
             case REPTILE:
-                requestBody.put("species", mascotaDTO.getEspecie());
-                requestBody.put("habitatType", mascotaDTO.getTipoHabitat());
-                requestBody.put("temperatureRequirements", mascotaDTO.getRequisitosTemperatura());
+                if (mascotaDTO.getEspecie() != null)
+                    requestBody.put("species", mascotaDTO.getEspecie());
+                if (mascotaDTO.getTipoHabitat() != null)
+                    requestBody.put("habitatType", mascotaDTO.getTipoHabitat());
+                if (mascotaDTO.getRequisitosTemperatura() != null)
+                    requestBody.put("temperatureRequirements", mascotaDTO.getRequisitosTemperatura());
                 requestBody.put("venomous", mascotaDTO.isVenenoso());
                 break;
             case FISH:
-                requestBody.put("waterType", mascotaDTO.getTipoAgua());
-                requestBody.put("waterTemperature", mascotaDTO.getTemperaturaAgua());
-                requestBody.put("phLevel", mascotaDTO.getNivelPH());
-                requestBody.put("socialBehavior", mascotaDTO.getComportamientoSocial());
+                if (mascotaDTO.getTipoAgua() != null)
+                    requestBody.put("waterType", mascotaDTO.getTipoAgua());
+                if (mascotaDTO.getTemperaturaAgua() != null)
+                    requestBody.put("waterTemperature", mascotaDTO.getTemperaturaAgua());
+                if (mascotaDTO.getNivelPH() != null)
+                    requestBody.put("phLevel", mascotaDTO.getNivelPH());
+                if (mascotaDTO.getComportamientoSocial() != null)
+                    requestBody.put("socialBehavior", mascotaDTO.getComportamientoSocial());
                 break;
             case RODENT:
-                requestBody.put("species", mascotaDTO.getEspecie());
+                if (mascotaDTO.getEspecie() != null)
+                    requestBody.put("species", mascotaDTO.getEspecie());
                 requestBody.put("cageTrained", mascotaDTO.isEntrenadoJaula());
-                requestBody.put("lifeExpectancy", mascotaDTO.getEsperanzaVida());
-                requestBody.put("teethCondition", mascotaDTO.getCondicionDientes());
+                if (mascotaDTO.getEsperanzaVida() != null)
+                    requestBody.put("lifespanYears", mascotaDTO.getEsperanzaVida());
+                if (mascotaDTO.getCondicionDientes() != null)
+                    requestBody.put("teethCondition", mascotaDTO.getCondicionDientes());
                 break;
             default:
                 break;
@@ -253,67 +270,84 @@ public class PetController {
                         : null);
         mascota.setNotas((String) mascotaApi.get("notes"));
         mascota.setDieta((String) mascotaApi.get("diet"));
-        mascota.setEsterilizado(mascotaApi.get("sterilized") != null &&
-                Boolean.parseBoolean(mascotaApi.get("sterilized").toString()));
+        mascota.setEsterilizado(safeGetBoolean(mascotaApi, "sterilized"));
         mascota.setUltimaDesparasitacion(mascotaApi.get("lastDewormingDate") != null
                 ? LocalDate.parse(mascotaApi.get("lastDewormingDate").toString())
                 : null);
 
-        if (mascotaApi.get("specificFields") != null) {
-            Map<String, Object> specificFields = (Map<String, Object>) mascotaApi.get("specificFields");
+        mascota.setRaza((String) mascotaApi.get("breed"));
 
-            mascota.setRaza((String) specificFields.get("breed"));
-
-            switch (mascota.getTipoAnimal()) {
-                case DOG:
-                    mascota.setTamano((String) specificFields.get("size"));
-                    mascota.setTipoPelaje((String) specificFields.get("coatType"));
-                    mascota.setPedigree(specificFields.get("pedigree") != null &&
-                            Boolean.parseBoolean(specificFields.get("pedigree").toString()));
-                    break;
-                case CAT:
-                    mascota.setTipoPelaje((String) specificFields.get("coatType"));
-                    mascota.setIndoor(specificFields.get("indoor") != null &&
-                            Boolean.parseBoolean(specificFields.get("indoor").toString()));
-                    break;
-                case BIRD:
-                    mascota.setEspecie((String) specificFields.get("species"));
-                    mascota.setAlasCortadas(specificFields.get("wingsClipped") != null &&
-                            Boolean.parseBoolean(specificFields.get("wingsClipped").toString()));
-                    mascota.setHabla(specificFields.get("talks") != null &&
-                            Boolean.parseBoolean(specificFields.get("talks").toString()));
-                    break;
-                case REPTILE:
-                    mascota.setEspecie((String) specificFields.get("species"));
-                    mascota.setTipoHabitat((String) specificFields.get("habitatType"));
-                    mascota.setRequisitosTemperatura((String) specificFields.get("temperatureRequirements"));
-                    mascota.setVenenoso(specificFields.get("venomous") != null &&
-                            Boolean.parseBoolean(specificFields.get("venomous").toString()));
-                    break;
-                case FISH:
-                    mascota.setTipoAgua((String) specificFields.get("waterType"));
-                    mascota.setTemperaturaAgua(specificFields.get("waterTemperature") != null
-                            ? Double.parseDouble(specificFields.get("waterTemperature").toString())
-                            : null);
-                    mascota.setNivelPH(specificFields.get("phLevel") != null
-                            ? Double.parseDouble(specificFields.get("phLevel").toString())
-                            : null);
-                    mascota.setComportamientoSocial((String) specificFields.get("socialBehavior"));
-                    break;
-                case RODENT:
-                    mascota.setEspecie((String) specificFields.get("species"));
-                    mascota.setEntrenadoJaula(specificFields.get("cageTrained") != null &&
-                            Boolean.parseBoolean(specificFields.get("cageTrained").toString()));
-                    mascota.setEsperanzaVida(specificFields.get("lifeExpectancy") != null
-                            ? Integer.parseInt(specificFields.get("lifeExpectancy").toString())
-                            : null);
-                    mascota.setCondicionDientes((String) specificFields.get("teethCondition"));
-                    break;
-                default:
-                    break;
-            }
+        switch (mascota.getTipoAnimal()) {
+            case DOG:
+                mascota.setTamano((String) mascotaApi.get("size"));
+                mascota.setTipoPelaje((String) mascotaApi.get("coatType"));
+                mascota.setPedigree(safeGetBoolean(mascotaApi, "pedigree"));
+                break;
+            case CAT:
+                mascota.setTipoPelaje((String) mascotaApi.get("coatType"));
+                mascota.setIndoor(safeGetBoolean(mascotaApi, "indoorOnly"));
+                break;
+            case BIRD:
+                mascota.setEspecie((String) mascotaApi.get("species"));
+                mascota.setAlasCortadas(safeGetBoolean(mascotaApi, "clippedWings"));
+                mascota.setHabla(safeGetBoolean(mascotaApi, "talkingAbility"));
+                break;
+            case REPTILE:
+                mascota.setEspecie((String) mascotaApi.get("species"));
+                mascota.setTipoHabitat((String) mascotaApi.get("habitatType"));
+                mascota.setRequisitosTemperatura((String) mascotaApi.get("temperatureRequirements"));
+                mascota.setVenenoso(safeGetBoolean(mascotaApi, "venomous"));
+                break;
+            case FISH:
+                mascota.setTipoAgua((String) mascotaApi.get("waterType"));
+                mascota.setTemperaturaAgua(safeGetDouble(mascotaApi, "waterTemperature"));
+                mascota.setNivelPH(safeGetDouble(mascotaApi, "phLevel"));
+                mascota.setComportamientoSocial((String) mascotaApi.get("socialBehavior"));
+                break;
+            case RODENT:
+                mascota.setEspecie((String) mascotaApi.get("species"));
+                mascota.setEntrenadoJaula(safeGetBoolean(mascotaApi, "cageTrained"));
+                mascota.setEsperanzaVida(safeGetInteger(mascotaApi, "lifespanYears"));
+                mascota.setCondicionDientes((String) mascotaApi.get("teethCondition"));
+                break;
+            default:
+                break;
         }
 
         return mascota;
+    }
+
+    private Boolean safeGetBoolean(Map<String, Object> map, String key) {
+        if (map.containsKey(key)) {
+            Object value = map.get(key);
+            if (value instanceof Boolean) {
+                return (Boolean) value;
+            } else if (value instanceof String) {
+                return Boolean.parseBoolean((String) value);
+            }
+        }
+        return false;
+    }
+
+    private Double safeGetDouble(Map<String, Object> map, String key) {
+        if (map.containsKey(key) && map.get(key) != null) {
+            try {
+                return Double.parseDouble(map.get(key).toString());
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private Integer safeGetInteger(Map<String, Object> map, String key) {
+        if (map.containsKey(key) && map.get(key) != null) {
+            try {
+                return Integer.parseInt(map.get(key).toString());
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

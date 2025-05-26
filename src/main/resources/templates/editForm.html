@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Mascota</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .dynamic-fields {
+            display: none;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="form-container">
+            <h2 class="mb-4">Editar Mascota</h2>
+            
+            <form th:action="@{/mascotas/actualizar/__${mascota.id}__}" th:object="${mascota}" method="post">
+                <input type="hidden" th:field="*{id}">
+                
+                <!-- Campos comunes a todos los animales -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tipoAnimal" class="form-label">Tipo de Animal</label>
+                        <select class="form-select" id="tipoAnimal" th:field="*{tipoAnimal}" required onchange="showSpecificFields()">
+                            <option value="">Seleccione un tipo</option>
+                            <option th:each="tipo : ${tiposAnimal}" 
+                                    th:value="${tipo}" 
+                                    th:text="${tipo}" 
+                                    th:selected="${mascota.tipoAnimal == tipo}"></option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="fechaNacimiento" th:field="*{fechaNacimiento}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="peso" class="form-label">Peso (kg)</label>
+                        <input type="number" step="0.1" class="form-control" id="peso" th:field="*{peso}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="sexo" class="form-label">Sexo</label>
+                        <select class="form-select" id="sexo" th:field="*{sexo}">
+                            <option value="">Seleccione</option>
+                            <option value="MALE">Macho</option>
+                            <option value="FEMALE">Hembra</option>
+                            <option value="UNKNOWN">Desconocido</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="color" class="form-label">Color</label>
+                        <input type="text" class="form-control" id="color" th:field="*{color}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="raza" class="form-label">Raza</label>
+                        <input type="text" class="form-control" id="raza" th:field="*{raza}">
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="dieta" class="form-label">Dieta</label>
+                        <input type="text" class="form-control" id="dieta" th:field="*{dieta}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="ultimaDesparasitacion" class="form-label">Última Desparasitación</label>
+                        <input type="date" class="form-control" id="ultimaDesparasitacion" th:field="*{ultimaDesparasitacion}">
+                    </div>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="esterilizado" th:field="*{esterilizado}">
+                    <label class="form-check-label" for="esterilizado">Esterilizado</label>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="notas" class="form-label">Notas</label>
+                    <textarea class="form-control" id="notas" th:field="*{notas}" rows="3"></textarea>
+                </div>
+                
+                <!-- Campos específicos por tipo de animal -->
+                
+                <!-- Campos para PERRO -->
+                <div id="dogFields" class="dynamic-fields">
+                    <h5 class="mt-4 mb-3">Información específica para Perros</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="tamano" class="form-label">Tamaño</label>
+                            <select class="form-select" id="tamano" th:field="*{tamano}">
+                                <option value="">Seleccione</option>
+                                <option value="SMALL">Pequeño</option>
+                                <option value="MEDIUM">Mediano</option>
+                                <option value="LARGE">Grande</option>
+                                <option value="GIANT">Gigante</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tipoPelaje" class="form-label">Tipo de Pelaje</label>
+                            <input type="text" class="form-control" id="tipoPelaje" th:field="*{tipoPelaje}">
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="pedigree" th:field="*{pedigree}">
+                        <label class="form-check-label" for="pedigree">Tiene Pedigree</label>
+                    </div>
+                </div>
+                
+                <!-- Campos para GATO -->
+                <div id="catFields" class="dynamic-fields">
+                    <h5 class="mt-4 mb-3">Información específica para Gatos</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="tipoPelaje" class="form-label">Tipo de Pelaje</label>
+                            <input type="text" class="form-control" id="tipoPelaje" th:field="*{tipoPelaje}">
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="indoor" th:field="*{indoor}">
+                        <label class="form-check-label" for="indoor">Es indoor (solo interior)</label>
+                    </div>
+                </div>
+                
+                <!-- Campos para AVE -->
+                <div id="birdFields" class="dynamic-fields">
+                    <h5 class="mt-4 mb-3">Información específica para Aves</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="especie" class="form-label">Especie</label>
+                            <input type="text" class="form-control" id="especie" th:field="*{especie}">
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="alasCortadas" th:field="*{alasCortadas}">
+                        <label class="form-check-label" for="alasCortadas">Alas cortadas</label>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="habla" th:field="*{habla}">
+                        <label class="form-check-label" for="habla">Habla</label>
+                    </div>
+                </div>
+                
+                <!-- Campos para REPTIL -->
+                <div id="reptileFields" class="dynamic-fields">
+                    <h5 class="mt-4 mb-3">Información específica para Reptiles</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="especie" class="form-label">Especie</label>
+                            <input type="text" class="form-control" id="especie" th:field="*{especie}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tipoHabitat" class="form-label">Tipo de Hábitat</label>
+                            <input type="text" class="form-control" id="tipoHabitat" th:field="*{tipoHabitat}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="requisitosTemperatura" class="form-label">Requisitos de Temperatura</label>
+                            <input type="text" class="form-control" id="requisitosTemperatura" th:field="*{requisitosTemperatura}">
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="venenoso" th:field="*{venenoso}">
+                        <label class="form-check-label" for="venenoso">Venenoso</label>
+                    </div>
+                </div>
+                
+                <!-- Campos para PEZ -->
+                <div id="fishFields" class="dynamic-fields">
+                    <h5 class="mt-4 mb-3">Información específica para Peces</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="tipoAgua" class="form-label">Tipo de Agua</label>
+                            <select class="form-select" id="tipoAgua" th:field="*{tipoAgua}">
+                                <option value="">Seleccione</option>
+                                <option value="FRESH">Agua dulce</option>
+                                <option value="SALT">Agua salada</option>
+                                <option value="BRACKISH">Agua salobre</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="temperaturaAgua" class="form-label">Temperatura del Agua (°C)</label>
+                            <input type="number" step="0.1" class="form-control" id="temperaturaAgua" th:field="*{temperaturaAgua}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nivelPH" class="form-label">Nivel de pH</label>
+                            <input type="number" step="0.1" class="form-control" id="nivelPH" th:field="*{nivelPH}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="comportamientoSocial" class="form-label">Comportamiento Social</label>
+                            <select class="form-select" id="comportamientoSocial" th:field="*{comportamientoSocial}">
+                                <option value="">Seleccione</option>
+                                <option value="COMMUNITY">Comunitario</option>
+                                <option value="SEMI_AGGRESSIVE">Semi-agresivo</option>
+                                <option value="AGGRESSIVE">Agresivo</option>
+                                <option value="SOLITARY">Solitaria</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campos para ROEDOR -->
+                <div id="rodentFields" class="dynamic-fields">
+                    <h5 class="mt-4 mb-3">Información específica para Roedores</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="especie" class="form-label">Especie</label>
+                            <input type="text" class="form-control" id="especie" th:field="*{especie}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="esperanzaVida" class="form-label">Esperanza de Vida (años)</label>
+                            <input type="number" class="form-control" id="esperanzaVida" th:field="*{esperanzaVida}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="condicionDientes" class="form-label">Condición de los Dientes</label>
+                            <select class="form-select" id="condicionDientes" th:field="*{condicionDientes}">
+                                <option value="">Seleccione</option>
+                                <option value="GOOD">Buena</option>
+                                <option value="MODERATE">Moderada</option>
+                                <option value="POOR">Mala</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="entrenadoJaula" th:field="*{entrenadoJaula}">
+                        <label class="form-check-label" for="entrenadoJaula">Entrenado para jaula</label>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a th:href="@{/mascotas}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSpecificFields() {
+            document.querySelectorAll('.dynamic-fields').forEach(field => {
+                field.style.display = 'none';
+            });
+            
+            const tipoAnimal = document.getElementById('tipoAnimal').value;
+            switch(tipoAnimal) {
+                case 'DOG':
+                    document.getElementById('dogFields').style.display = 'block';
+                    break;
+                case 'CAT':
+                    document.getElementById('catFields').style.display = 'block';
+                    break;
+                case 'BIRD':
+                    document.getElementById('birdFields').style.display = 'block';
+                    break;
+                case 'REPTILE':
+                    document.getElementById('reptileFields').style.display = 'block';
+                    break;
+                case 'FISH':
+                    document.getElementById('fishFields').style.display = 'block';
+                    break;
+                case 'RODENT':
+                    document.getElementById('rodentFields').style.display = 'block';
+                    break;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            showSpecificFields();
+        });
+    </script>
+</body>
+</html>
